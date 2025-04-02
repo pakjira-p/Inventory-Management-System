@@ -25,6 +25,7 @@ This project is designed as a test application for practicing software testing t
 - Database: MongoDB
 
 - Authentication: JWT (JSON Web Token)
+
 ## Screenshots
 
 ![LaningPage](https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/487856938_9547251245360663_8895935664821078421_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=UIgc6KTa7uwQ7kNvgEVSrlw&_nc_oc=AdlVB5hK5rsKc1k4BBsMWq5s4DNoQ-p1rg0vGZXwbddprL2rCaTQqvc-tXeffG86fxI&_nc_zt=23&_nc_ht=scontent.fbkk22-8.fna&_nc_gid=I_ybALAtsE1kcUDD-E_aQQ&oh=00_AYF8jiYOMQO6aW4g0knAPpiSwIp28xO2iplp2EAzsmuSgQ&oe=67F2FB40)
@@ -35,3 +36,27 @@ This project is designed as a test application for practicing software testing t
 
 <!-- เดี๋ยวค่อยเอารูปใหม่ใส่อันนี้ใส่เป็นโครงไว้ก่อน เหลือในส่วนของหน้า cetegory ยังไม่ได้ทำ-->
 ![MainPage](https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/487873031_9547251282027326_4581960889141019134_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=IrNHh4_VLiQQ7kNvgFu4XEE&_nc_oc=AdkXiUDOtw9FZpePdCMa0lrwCr6BLHPDrac38FZBJ-KCK4hmRURCNt_oe8rbDqCpEFQ&_nc_zt=23&_nc_ht=scontent.fbkk22-8.fna&_nc_gid=D3VV7KMJcZTNTbZ5ib_U4A&oh=00_AYF5lYtpxf6ovvhIJWoIbmWskDPVjgT8beu-0QZ4g6TSYQ&oe=67F31455)
+
+
+## API Endpoints
+
+### Categories
+- `GET /api/categories` - Get all categories
+- `POST /api/categories` - Create a new category
+- `GET /api/categories/:id` - Get category by ID
+- `PUT /api/categories/:id` - Update category by ID
+- `DELETE /api/categories/:id` - Delete category by ID
+
+### Products
+- `GET /api/products` - Get all products
+- `POST /api/products` - Create a new product
+- `GET /api/products/:id` - Get product by ID
+- `PUT /api/products/:id` - Update product by ID
+- `DELETE /api/products/:id` - Delete product by ID
+
+### Users
+- `GET /api/users` - Get all users
+- `POST /api/users` - Create a new user
+- `GET /api/users/:id` - Get user by ID
+- `PUT /api/users/:id` - Update user by ID
+- `DELETE /api/users/:id` - Delete user by ID
