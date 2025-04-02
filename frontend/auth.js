@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("login-form");
     const registerForm = document.getElementById("register-form");
-    const logoutBtn = document.getElementById("logout-btn");
+    // const logoutBtn = document.getElementById("logout-btn");
+    
 
     // Protect Routes
     if (window.location.pathname.includes("index.html")) {
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await res.json();
             if (res.ok) {
                 localStorage.setItem("token", data.token);
-                window.location.href = "dashboard.html";
+                window.location.href = "products.html";
             } else {
                 alert(data.message);
             }
@@ -56,11 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Logout
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", function () {
-            localStorage.removeItem("token");
-            window.location.href = "login.html";
-        });
-    }
+    // // Logout
+    // if (logoutBtn) {
+    //     logoutBtn.addEventListener("click", function () {
+    //         localStorage.removeItem("token");
+    //         window.location.href = "login.html";
+    //     });
+    // }
 });

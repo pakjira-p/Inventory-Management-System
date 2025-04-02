@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const categoryFilter = document.getElementById("category-filter");
     const searchBox = document.getElementById("search-box");
     const token = localStorage.getItem("token");
-
+    
     if (!token) {
         window.location.href = "login.html";
     }
