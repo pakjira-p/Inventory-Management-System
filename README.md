@@ -34,7 +34,7 @@ This project is designed as a test application for practicing software testing t
 
 ![RegisterPage](https://scontent.fbkk22-2.fna.fbcdn.net/v/t39.30808-6/487856591_9547251402027314_4125292184330901389_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=YiUCCL6NCSUQ7kNvgFWZ-yF&_nc_oc=Adk445JL4UqagQPk5lcwCn9Wb_k9lHw4RUi_wI_pK3rB5JusBpgZb4xOVC5otOEMkuM&_nc_zt=23&_nc_ht=scontent.fbkk22-2.fna&_nc_gid=D3VV7KMJcZTNTbZ5ib_U4A&oh=00_AYEesmZrqoIiqz9AvjzUt4lCoRDHnWusiUx_uOuo-ioCvQ&oe=67F2EBDC)
 
-![ProductsPage](https://scontent.fbkk22-3.fna.fbcdn.net/v/t39.30808-6/487780357_9549057395180048_8887404194453555539_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=9q3H6Jt7aBoQ7kNvgGbzSeU&_nc_oc=Adk5wuAIBKjJppXcjZjYids4ZV_dtkWo-WYwxMCZXYvoON7bdB2jzPT56DtvsmPY_7U&_nc_zt=23&_nc_ht=scontent.fbkk22-3.fna&_nc_gid=BbTrAOOntlhbMAUwCf5cbA&oh=00_AYFoPFIPfpZFYYiR4IofaqaWuby4MERROUUiPtBqv28cFw&oe=67F34C33)
+![ProductsPage](https://scontent.fbkk22-2.fna.fbcdn.net/v/t39.30808-6/487859722_9549201741832280_1011912406401594555_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=T6Hz9pdzr9cQ7kNvgHRoSQw&_nc_oc=AdkdlDzSGff95nfFBQW27CNnDITQN2o6MEgAwuFaBwPXZ-wIpyJZ6_xLcneut18Q3GE&_nc_zt=23&_nc_ht=scontent.fbkk22-2.fna&_nc_gid=pw41DsR_ZGysweIohyKlXw&oh=00_AYEZtsYpVXRNyVsAJD1h14ihvXpnnsoFVYNUVIbdxYyZMw&oe=67F351F2)
 
 ![CategoriesPage](https://scontent.fbkk22-1.fna.fbcdn.net/v/t39.30808-6/487530970_9549057295180058_8797169157338203042_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=vgcYgnK0aEYQ7kNvgFnEItb&_nc_oc=AdkUwPKzfQqtpJ-5Ob5w2UXGvt2hxuOM0SR9az36lXZnYTXhznfqxV6ehglu-kAK38o&_nc_zt=23&_nc_ht=scontent.fbkk22-1.fna&_nc_gid=4pd7AXFlZKY-qnth_ovTDA&oh=00_AYF0EUSzg-Yjw3cXLca-BZSCEKSOEmg4ITGvzFvOsxSOSQ&oe=67F33A17)
 
@@ -60,3 +60,47 @@ This project is designed as a test application for practicing software testing t
 - `GET /api/users/:id` - Get user by ID
 - `PUT /api/users/:id` - Update user by ID
 - `DELETE /api/users/:id` - Delete user by ID
+
+## Installation Instructions
+
+### Prerequisites
+Before you begin, make sure you have **Node.js** and **MongoDB** installed.
+
+1. **Install Node.js**  
+   Download and install Node.js from [here](https://nodejs.org/).
+
+2. **Install MongoDB**  
+   Download and install MongoDB from [here](https://www.mongodb.com/try/download/community), or use **MongoDB Atlas** (cloud database).
+
+### Setup
+
+#### 1. Clone the repository 
+```bash
+  git clone https://github.com/pakjira-p/Inventory-Management-System.git
+  cd Inventory-Management-System
+```
+#### 2. Install the required Node.js dependencies
+```bash
+  npm install
+```
+#### 3. Set up environment variables in backend/.env 
+```env
+  # For local MongoDB
+  MONGO_URI=mongodb://localhost:27017/yourdatabase
+
+  # For MongoDB Atlas
+  # MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/yourdatabase?retryWrites=true&w=majority
+
+  PORT=5000
+  JWT_SECRET=your_secret_key
+```
+- For Local MongoDB: Use mongodb://localhost:27017/yourdatabase as your MONGO_URI.
+
+- For MongoDB Atlas: Replace <username>, <password>, and yourdatabase with your MongoDB Atlas cluster credentials and database name. You can find this information in your MongoDB Atlas dashboard after creating a cluster.
+
+#### 4. Run the application 
+```bash
+  npm start
+```
+
+Your app should now be running on http://localhost:5000.
