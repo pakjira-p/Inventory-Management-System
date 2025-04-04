@@ -1,10 +1,8 @@
-# Inventory-Management-System (In progress)
-Deploy on Rander [Live Demo]()
+# Inventory-Management-System
 
 ## Description
 
 This project is designed as a test application for practicing software testing techniques. It includes fundamental features for inventory management, such as category and product management, authentication, and API endpoints.
-
 
 ## Features
 
