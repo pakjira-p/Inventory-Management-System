@@ -1,29 +1,32 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Routes management
-    const ProductPage = document.getElementById("ProductPage-btn");
-    const CategoriesPage = document.getElementById("CategoriesPage-btn");
+document.addEventListener("DOMContentLoaded", () => {
+    // DOM Elements
+    const productBtn = document.getElementById("ProductPage-btn");
+    const categoryBtn = document.getElementById("CategoriesPage-btn");
     const logoutBtn = document.getElementById("logout-btn");
-    
-     // ProductPage
-     if (ProductPage) {
-        ProductPage.addEventListener("click", function () {
-            window.location.href = "products.html";
-        });
+
+    // Navigation Handler
+    const navigateTo = (url) => {
+        window.location.href = url;
+    };
+
+    // Bind Events
+    if (productBtn) {
+        productBtn.addEventListener("click", () => navigateTo("products.html"));
     }
 
-    // CategoriesPage
-    if (CategoriesPage) {
-        CategoriesPage.addEventListener("click", function () {
-            window.location.href = "categories.html";
-        });
+    if (categoryBtn) {
+        categoryBtn.addEventListener("click", () => navigateTo("categories.html"));
     }
 
-     // Logout
-     if (logoutBtn) {
-        logoutBtn.addEventListener("click", function () {
-            localStorage.removeItem("token");
-            window.location.href = "login.html";
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            try {
+                localStorage.removeItem("token");
+                navigateTo("login.html");
+            } catch (err) {
+                console.error("Logout error:", err);
+                alert("Error during logout. Please try again.");
+            }
         });
     }
-
 });

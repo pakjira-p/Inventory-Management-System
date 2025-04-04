@@ -2,7 +2,7 @@
   "name": "inventory-management-system",
   "version": "1.0.0",
   "description": "This is a simple Inventory Management System",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "npm-run-all --parallel start-backend start-frontend",
     "start-backend": "cd backend && node server.js",

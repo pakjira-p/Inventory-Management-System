@@ -1,30 +1,34 @@
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", () => {
     const categoryList = document.getElementById("category-list");
     const searchBox = document.getElementById("search-box");
     const token = localStorage.getItem("token");
 
-    // ตรวจสอบว่าไม่มี token จะทำการ redirect ไปที่หน้า login
     if (!token) {
         window.location.href = "login.html";
+        return;
     }
 
     let categories = [];
 
-    // ดึงข้อมูล categories จาก API
+    // Fetch all categories
     async function fetchCategories() {
-        const res = await fetch("http://localhost:5000/api/categories", {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        categories = await res.json();
-        displayCategories(categories)
+        try {
+            const res = await fetch("http://localhost:5000/api/categories", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            categories = await res.json();
+            displayCategories(categories);
+        } catch (error) {
+            console.error("Failed to fetch categories:", error);
+            alert("Failed to load categories.");
+        }
     }
-    
 
-    // แสดงข้อมูล categories ในตาราง
-    function displayCategories(filteredCategories) {
-        categoryList.innerHTML = ""; // ลบข้อมูลเก่าออกจากตาราง
+    // Display categories to the table
+    function displayCategories(list) {
+        categoryList.innerHTML = "";
 
-        filteredCategories.forEach((category) => {
+        list.forEach((category) => {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${category.name}</td>
@@ -37,150 +41,130 @@ document.addEventListener("DOMContentLoaded", async function () {
             categoryList.appendChild(row);
         });
 
-        // ตั้งค่า event listener สำหรับปุ่ม Edit และ Delete
-        document.querySelectorAll(".delete-btn").forEach((btn) => {
-            btn.addEventListener("click", deleteCategory);
-        });
-
-        document.querySelectorAll(".edit-btn").forEach((btn) => {
-            btn.addEventListener("click", editCategory);
-        });
-    }
-
-    // ฟังก์ชันสำหรับค้นหาหมวดหมู่
-    function searchCategories() {
-        const searchTerm = searchBox.value.toLowerCase();
-        const filtered = categories.filter((c) =>
-            c.name.toLowerCase().includes(searchTerm)
+        // Bind edit/delete events
+        document.querySelectorAll(".edit-btn").forEach(btn =>
+            btn.addEventListener("click", handleEdit)
         );
-        displayCategories(filtered); // แสดงผลที่กรองแล้ว
+        document.querySelectorAll(".delete-btn").forEach(btn =>
+            btn.addEventListener("click", handleDelete)
+        );
     }
 
-    // ตั้งค่าให้ฟังก์ชันค้นหาทำงานเมื่อมีการพิมพ์ในช่องค้นหา
-    searchBox.addEventListener("input", searchCategories);
+    // Handle search
+    searchBox.addEventListener("input", () => {
+        const term = searchBox.value.toLowerCase();
+        const filtered = categories.filter(c =>
+            c.name.toLowerCase().includes(term)
+        );
+        displayCategories(filtered);
+    });
 
-    // ลบหมวดหมู่
-    async function deleteCategory(e) {
+    // Handle delete category
+    async function handleDelete(e) {
         const id = e.target.dataset.id;
         const category = categories.find(c => c._id === id);
-
         if (!category) return alert("Category not found!");
 
-        const confirmation = prompt(`Type the category name "${category.name}" to confirm deletion:`);
+        const confirmText = prompt(`Type the category name "${category.name}" to confirm deletion:`);
+        if (confirmText !== category.name) return alert("Category name does not match. Deletion cancelled.");
 
-        if (confirmation === category.name) {
-            try {
-                const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
-                    method: "DELETE",
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                if (res.ok) {
-                    alert("Category deleted successfully!");
-                    fetchCategories(); // รีเฟรชข้อมูลหลังลบ
-                } else {
-                    alert("Failed to delete category.");
-                }
-            } catch (error) {
-                console.error("Error deleting category:", error);
-                alert("There was an error deleting category.");
+        try {
+            const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                alert("Category deleted.");
+                await fetchCategories();
+            } else {
+                alert("Failed to delete category.");
             }
-        } else {
-            alert("Category name does not match. Deletion cancelled.");
+        } catch (error) {
+            console.error("Error deleting category:", error);
+            alert("An error occurred while deleting category.");
         }
     }
 
-    // ฟังก์ชันสำหรับแก้ไขหมวดหมู่
-    function editCategory(e) {
+    // Open edit modal
+    function handleEdit(e) {
         const id = e.target.dataset.id;
         const category = categories.find(c => c._id === id);
         if (!category) return;
 
-        // กรอกข้อมูลในฟอร์มแก้ไข
         document.getElementById("editCategoryId").value = category._id;
         document.getElementById("editCategoryName").value = category.name;
         document.getElementById("editCategoryDescription").value = category.description;
 
         const modal = new bootstrap.Modal(document.getElementById("editCategoryModal"));
-        modal.show(); // แสดง modal สำหรับแก้ไข
+        modal.show();
     }
 
-    // ตั้งค่าให้ฟอร์มแก้ไขทำงาน
-    document.getElementById("editCategoryForm").addEventListener("submit", async function (e) {
+    // Submit edited category
+    document.getElementById("editCategoryForm").addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const categoryId = document.getElementById("editCategoryId").value;
-        const updatedCategory = {
+        const id = document.getElementById("editCategoryId").value;
+        const updated = {
             name: document.getElementById("editCategoryName").value,
-            description: document.getElementById("editCategoryDescription").value,
+            description: document.getElementById("editCategoryDescription").value
         };
 
         try {
-            const res = await fetch(`http://localhost:5000/api/categories/${categoryId}`, {
+            const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify(updatedCategory),
+                body: JSON.stringify(updated)
             });
 
             if (res.ok) {
-                alert("Category updated successfully!");
+                alert("Category updated.");
                 const modalElement = document.getElementById("editCategoryModal");
-                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                if (modalInstance) modalInstance.hide();
-                fetchCategories(); // รีเฟรชข้อมูลหลังแก้ไข
+                bootstrap.Modal.getInstance(modalElement).hide();
+                await fetchCategories();
             } else {
                 alert("Failed to update category.");
             }
         } catch (error) {
             console.error("Error updating category:", error);
-            alert("There was an error updating category.");
+            alert("An error occurred while updating category.");
         }
     });
 
-        // Handle form submission to adding new category
-        document.getElementById("addCategoryForm").addEventListener("submit", async function (e) {
-            e.preventDefault(); // Prevent default form submission
-        
-            const categoryName = document.getElementById("categoryName").value; // Get category name
-            const categoryDescription = document.getElementById("categoryDescription").value; // Get category description
-        
-            const newCategory = { name: categoryName, description: categoryDescription};
-        
-            const token = localStorage.getItem("token");
-        
-            try {
-                // Send POST request to add the new category
-                const res = await fetch("http://localhost:5000/api/categories", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(newCategory),
-                });
-                // Fetch categories again to update the list
-                await fetchCategories();
-        
-                if (res.ok) {
-                    alert("Category added successfully!");
-                    // Close the modal after adding category
-                    const modalElement = document.getElementById("addCategoryModal");
-                    const modalInstance = bootstrap.Modal.getInstance(modalElement); // Get the modal instance
-                    if (modalInstance) {
-                        modalInstance.hide(); // Close the modal
-                        
-                    }
-                } else {
-                    alert("Failed to add category.");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("An error occurred while adding the category.");
-            }
-        });
+    // Add new category
+    document.getElementById("addCategoryForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    // เรียกใช้งานฟังก์ชันเพื่อดึงข้อมูลหมวดหมู่เมื่อโหลดหน้า
+        const name = document.getElementById("categoryName").value;
+        const description = document.getElementById("categoryDescription").value;
+
+        try {
+            const res = await fetch("http://localhost:5000/api/categories", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ name, description })
+            });
+
+            if (res.ok) {
+                alert("Category added.");
+                bootstrap.Modal.getInstance(document.getElementById("addCategoryModal")).hide();
+                await fetchCategories();
+                e.target.reset(); // clear form
+            } else {
+                alert("Failed to add category.");
+            }
+        } catch (error) {
+            console.error("Error adding category:", error);
+            alert("An error occurred while adding category.");
+        }
+    });
+
+    // Init
     fetchCategories();
 });

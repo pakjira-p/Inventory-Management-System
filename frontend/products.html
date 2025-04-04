@@ -1,173 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMS</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IMS</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap JS and Popper.js (Required for Bootstrap Modals) -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Inventory</a>
-            <div>
-                <a class="btn text-white" id="ProductPage-btn">Product</a>
-                <a class="btn text-white" id="CategoriesPage-btn">Categories</a>
-                <a class="btn text-white" id="logout-btn">Logout</a>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Inventory</a>
+      <div>
+        <a class="btn text-white" id="ProductPage-btn">Product</a>
+        <a class="btn text-white" id="CategoriesPage-btn">Categories</a>
+        <a class="btn text-white" id="logout-btn">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mt-5">
+    <h2 class="mb-4">Products</h2>
+
+    <!-- Filter & Search -->
+    <section class="mb-3 d-flex align-items-end gap-3">
+      <div>
+        <label for="category-filter" class="form-label">Filter by Category</label>
+        <select id="category-filter" class="form-select"></select>
+      </div>
+      <div class="flex-grow-1">
+        <label for="search-box" class="form-label">Search Products</label>
+        <input type="text" id="search-box" class="form-control" placeholder="Search by name"/>
+      </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <div class="d-flex mb-3 gap-3">
+      <button class="btn btn-primary" id="add-product-btn" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product</button>
+      <button class="btn btn-success" id="add-category-btn" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Add New Category</button>
+    </div>
+
+    <!-- Product Table -->
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="product-list">
+          <!-- Product rows will be rendered here -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ==================== Modals ==================== -->
+
+  <!-- Add Product Modal -->
+  <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="addProductForm">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Product</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="productName" class="form-label">Product Name</label>
+              <input type="text" id="productName" class="form-control" required />
             </div>
-            
-        </div>
-    </nav>
-
-    <div class="container mt-5">
-        <h2>Products</h2>
-
-        <div class="mb-3 d-flex align-items-center">
-            <!-- Category Filter -->
-            <div class="me-3">
-                <label for="category-filter" class="form-label">Filter by Category:</label>
-                <select id="category-filter" class="form-select">
-                    <!-- <option value="all">All Categories</option> -->
-                </select>
+            <div class="mb-3">
+              <label for="productDescription" class="form-label">Description</label>
+              <textarea id="productDescription" class="form-control" required></textarea>
             </div>
-        
-            <!-- Search Box -->
-            <div class="flex-grow-1">
-                <label for="search-box" class="form-label">Search Products:</label>
-                <input type="text" id="search-box" class="form-control" placeholder="Search by name">
+            <div class="mb-3">
+              <label for="productPrice" class="form-label">Price</label>
+              <input type="number" id="productPrice" class="form-control" required />
             </div>
-        </div>
-    
-        <!-- Add New Product and Add New Category Buttons -->
-        <div class="d-flex justify-content-start mb-3">
-            <button class="btn btn-primary me-3" id="add-product-btn" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product</button>
-            <button class="btn btn-success" id="add-category-btn" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Add New Category</button>
-        </div>
-
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Category</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="product-list">
-                <!-- Product data will be added here -->
-            </tbody>
-        </table>
-
-
-        <!-- Modal edit product -->
-        <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editProductForm">
-                            <input type="hidden" id="editProductId">
-                            <div class="mb-3">
-                                <label for="editProductName" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="editProductName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editProductDescription" class="form-label">Description</label>
-                                <input type="text" class="form-control" id="editProductDescription" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editProductPrice" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="editProductPrice" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editProductStock" class="form-label">Stock</label>
-                                <input type="number" class="form-control" id="editProductStock" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                        </form>
-                    </div>
-                </div>
+            <div class="mb-3">
+              <label for="productStock" class="form-label">Stock</label>
+              <input type="number" id="productStock" class="form-control" required />
             </div>
-        </div>
-
-        <!-- Modal adding new category -->
-        <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <form id="addCategoryForm">
-                    <div class="mb-3">
-                    <label for="categoryName" class="form-label">Category Name</label>
-                    <input type="text" class="form-control" id="categoryName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="categoryDescription" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="categoryDescription" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Category</button>
-                </form>
-                </div>
+            <div class="mb-3">
+              <label for="productCategory" class="form-label">Category</label>
+              <select id="productCategory" class="form-select" required></select>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Add Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Product Modal -->
+  <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="editProductForm">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Product</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editProductId" />
+            <div class="mb-3">
+              <label for="editProductName" class="form-label">Name</label>
+              <input type="text" id="editProductName" class="form-control" required />
             </div>
-        </div>
-
-        <!-- New Product Modal -->
-        <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="addProductForm">
-                            <div class="mb-3">
-                                <label for="productName" class="form-label">Product Name</label>
-                                <input type="text" class="form-control" id="productName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="productDescription" class="form-label">Product Description</label>
-                                <textarea class="form-control" id="productDescription" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="productPrice" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="productPrice" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="productStock" class="form-label">Stock</label>
-                                <input type="number" class="form-control" id="productStock" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="productCategory" class="form-label">Category</label>
-                                <select class="form-select" id="productCategory" required></select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Add Product</button>
-                        </form>
-                    </div>
-                </div>
+            <div class="mb-3">
+              <label for="editProductDescription" class="form-label">Description</label>
+              <input type="text" id="editProductDescription" class="form-control" required />
             </div>
-        </div>
+            <div class="mb-3">
+              <label for="editProductPrice" class="form-label">Price</label>
+              <input type="number" id="editProductPrice" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="editProductStock" class="form-label">Stock</label>
+              <input type="number" id="editProductStock" class="form-control" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
+  <!-- Add Category Modal -->
+  <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="addCategoryForm">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Category</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="categoryName" class="form-label">Category Name</label>
+              <input type="text" id="categoryName" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="categoryDescription" class="form-label">Description</label>
+              <input type="text" id="categoryDescription" class="form-control" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Add Category</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-    <script src="auth.js"></script>
-    <script src="routes.js"></script>
-    <script src="products.js"></script>
+  <!-- ==================== Scripts ==================== -->
+  <script src="auth.js"></script>
+  <script src="routes.js"></script>
+  <script src="products.js"></script>
 </body>
 </html>
